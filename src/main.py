@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
-from funder.base import router as funder_router, router_lifespan as funder_lifespan
+from sample_app.base import router as funder_router, router_lifespan as funder_lifespan
 from common.base import router as common_router
 from global_variables import global_variables
 

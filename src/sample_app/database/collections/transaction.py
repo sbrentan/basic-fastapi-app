@@ -1,5 +1,5 @@
 from common.database.sqlite import BaseSqliteCollection, SqliteDatabase
-from funder.schemas.models import Transaction
+from sample_app.schemas.models import Transaction
 
 
 class TransactionCollection(BaseSqliteCollection[Transaction]):
