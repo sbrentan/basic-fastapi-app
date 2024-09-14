@@ -1,4 +1,3 @@
-import logging
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -7,11 +6,6 @@ from starlette.middleware.cors import CORSMiddleware
 from funder.base import router as funder_router, router_lifespan as funder_lifespan
 from common.base import router as common_router
 from global_variables import global_variables
-
-logging.basicConfig(
-    level=logging.DEBUG,  # Set the logging level
-    format="%(asctime)s - %(levelname)s - %(message)s"
-)
 
 
 @asynccontextmanager
