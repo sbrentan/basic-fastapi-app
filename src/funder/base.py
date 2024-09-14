@@ -1,3 +1,4 @@
+import logging
 from typing import Callable, Tuple
 
 from fastapi import APIRouter
@@ -13,12 +14,12 @@ router = APIRouter(
 
 
 async def router_startup(fastapi_app):
-    print("Starting up the funder...")
+    logging.debug("Starting up the funder...")
     global_variables.databases["funder"] = funder_database
 
 
 async def router_shutdown(fastapi_app):
-    print("Shutting down the funder...")
+    logging.debug("Shutting down the funder...")
 
 router_lifespan: Tuple[Callable, Callable] = (router_startup, router_shutdown)
 
