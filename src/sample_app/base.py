@@ -3,9 +3,9 @@ from typing import Callable, Tuple
 
 from fastapi import APIRouter
 
-from sample_app.database.database import sample_database
+from database import database
 from sample_app.routers.transaction import router as transaction_router
-from global_variables import global_variables
+from vars import global_variables
 
 router = APIRouter(
     prefix="/sample",
@@ -15,7 +15,7 @@ router = APIRouter(
 
 async def router_startup(fastapi_app):
     logging.debug("Starting up the sample app...")
-    global_variables.databases["sample"] = sample_database
+    global_variables.databases["sample"] = database
 
 
 async def router_shutdown(fastapi_app):

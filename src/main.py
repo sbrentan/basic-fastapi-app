@@ -3,22 +3,23 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
-from sample_app.base import router as funder_router, router_lifespan as funder_lifespan
+from common import MIDDLEWARES
+from vars import global_variables
+from sample_app.base import router as sample_router, router_lifespan as sample_lifespan
 from common.base import router as common_router
-from global_variables import global_variables
 
 
 @asynccontextmanager
 async def lifespan(fastapi_app: FastAPI):
     # SINGLE APPLICATIONS STARTUP
-    await funder_lifespan[0](fastapi_app)
+    await sample_lifespan[0](fastapi_app)
 
     # MAIN APPLICATION STARTUP
     global_variables.APP = fastapi_app
     yield
 
     # SINGLE APPLICATIONS SHUTDOWN
-    await funder_lifespan[1](fastapi_app)
+    await sample_lifespan[1](fastapi_app)
 
 
 app = FastAPI(lifespan=lifespan)
@@ -37,4 +38,7 @@ app.add_middleware(
 )
 
 app.include_router(common_router)
-app.include_router(funder_router)
+app.include_router(sample_router)
+
+for middleware in MIDDLEWARES:
+    app.add_middleware(middleware)

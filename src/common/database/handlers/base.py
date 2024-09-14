@@ -3,38 +3,11 @@ from abc import abstractmethod, ABC
 from typing import Type
 
 from pydantic import BaseModel
-from motor import motor_asyncio
-from typing import TypeVar, Generic, List
+from typing import TypeVar
+
+from common.database.collections.base import BaseCollection
 
 T = TypeVar('T', bound=BaseModel)
-
-
-class BaseCollection(ABC, Generic[T]):
-
-    def __init__(self, database: Database):
-        self.collection = None
-        self.database = database
-        self.instance_class = None
-
-    @abstractmethod
-    async def get(self, item_id: str) -> T:
-        raise NotImplementedError
-
-    @abstractmethod
-    async def filter(self, **kwargs) -> List[T]:
-        raise NotImplementedError
-
-    @abstractmethod
-    async def create(self, new_item: T, **kwargs) -> T:
-        raise NotImplementedError
-
-    @abstractmethod
-    async def update(self, item: T, **kwargs) -> T:
-        raise NotImplementedError
-
-    @abstractmethod
-    async def delete(self, item_id) -> bool:
-        raise NotImplementedError
 
 
 class Database(ABC):
@@ -72,21 +45,3 @@ class Database(ABC):
     @abstractmethod
     def close(self):
         raise NotImplementedError
-
-
-class MongoDatabase(Database):
-
-    database = None
-    client = None
-
-    def __init__(self, database_url: str, collections: dict[str, Type[BaseCollection]]):
-        super().__init__(collections)
-        self.database_url = database_url
-        self.collections = collections
-
-    def start(self):
-        self.client = motor_asyncio.AsyncIOMotorClient(self.database_url)
-        self.database = self.client.melius
-
-    def close(self):
-        self.database.client.close()
